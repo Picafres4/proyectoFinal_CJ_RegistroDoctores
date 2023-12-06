@@ -1,4 +1,6 @@
+import entidades.Cita;
 import entidades.Paciente;
+import entidades.Doctor;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,26 +21,42 @@ public class Main {
         p.setAlergias("Ninguna");
         p.setPadecimientos("Ninguno");
 
-        Date fecha =new Date();
-        p.setFechaNacimiento(fecha);
-        lista.add(p);
+        ArrayList<Doctor> listaDoctores = new ArrayList<Doctor>();
+        Doctor d = new Doctor();
+
+
+        d.setIdDoc("00015");
+        d.setNombreDoc("mercedes");
+        d.setApPaternoDoc("iglesias");
+        d.setApMaternoDoc("Castillo");
+        d.setCPDoc("123456");
+
+        listaDoctores.add(d);
+
+
+        ArrayList<Cita> listaCitas= new ArrayList<Cita>();
+        Cita c = new Cita();
+
+        c.setObservaciones("m");
+        c.setHora("15");
+        c.setMinutos("30");
+        c.setIdDoctor("00015");
+
+        listaCitas.add(c);
 
         try{
             // escribir en archivo
-            FileOutputStream escribir = new FileOutputStream("athainarada\\listaPacientes.txt");
+            FileOutputStream escribir = new FileOutputStream("athainarada\\listaCitas.txt");
             ObjectOutputStream miStream = new ObjectOutputStream(escribir);
-            miStream.writeObject(lista);
+            miStream.writeObject(listaCitas);
             miStream.close();
 
-
-            //ArchivoCRUD.leerArchivo();
             //LEER lista desde archivo
 
-            FileInputStream leer = new FileInputStream("athainarada\\listaPacientes.txt");
+            FileInputStream leer = new FileInputStream("athainarada\\listaCitas.txt");
             ObjectInputStream miStream2 = new ObjectInputStream(leer);
-            Object o = miStream2.readObject();
+            Object o3 = miStream2.readObject();
 
-            ArrayList<Paciente> otraLista = (ArrayList<Paciente>)o;
             miStream2.close();
 
 
@@ -50,5 +68,7 @@ public class Main {
         }catch(ClassNotFoundException e){
             System.out.println("Error al leer lista de clase Paciente");
         }
+
+
     }
 }

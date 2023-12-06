@@ -2,9 +2,9 @@ import DAO.PacientesCRUD;
 import entidades.Paciente;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ventanaPacientes extends JFrame {
@@ -30,12 +30,34 @@ public class ventanaPacientes extends JFrame {
     private JComboBox cmbSexo;
     private JTextField txtFecha;
     private JButton btnBuscar;
-    private JButton btnNuevo;
+
+    public JButton getBtnNuevo() {
+        return btnNuevo;
+    }
+
+    public void setBtnNuevo(JButton btnNuevo) {
+        this.btnNuevo = btnNuevo;
+    }
+
+    public JButton btnNuevo;
     private JButton btnActualizar;
     private JButton btnEliminar;
     private JPanel panelBotones;
     private JLabel lblTitulo;
     private JButton btnLimpiar;
+
+    public boolean validarFecha(String fecha) {
+        try {
+            SimpleDateFormat formatoFecha =
+                    new SimpleDateFormat("dd/MM/yyyy");
+            formatoFecha.setLenient(false);
+            Date miFecha = formatoFecha.parse(fecha);
+            System.out.println(miFecha);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
     // limpiar formulario completo si no quiere dar de alta ningún paciente
     public void limpiarFormularioCompleto() {
@@ -65,7 +87,7 @@ public class ventanaPacientes extends JFrame {
     // verificar que no haya campos vacíos
     public boolean verificarCampo() {
         if (txtNombre.getText().isEmpty() || txtIdPaciente.getText().isEmpty() || txtNSS.getText().isEmpty() ||
-                txtApellidoP.getText().isEmpty() || txtApellidoM.getText().isEmpty() ||
+                txtApellidoP.getText().isEmpty() || txtApellidoM.getText().isEmpty() || txtFecha.getText().isEmpty() ||
                 txtOperaciones.getText().isEmpty() || txtAlergias.getText().isEmpty() ||
                 txtPadecimientos.getText().isEmpty()) {
             JOptionPane.showMessageDialog(miPanel, "Los campos no están completados, inténtalo de nuevo");
@@ -76,6 +98,7 @@ public class ventanaPacientes extends JFrame {
         }
     }
 
+    // buscar
     public ventanaPacientes() {
         btnBuscar.addActionListener(new ActionListener() {
             @Override
@@ -131,6 +154,15 @@ public class ventanaPacientes extends JFrame {
 
                 p.setFechaNacimiento(new Date());
 
+                boolean resultado = validarFecha(txtFecha.getText());
+                if (resultado) {
+                    JOptionPane.showMessageDialog(miPanel, "se agregó correctamente");
+
+                }else {
+                    JOptionPane.showMessageDialog(miPanel,"error en escritura, ingrese fecha de nuevo");
+                    txtFecha.requestFocus();
+                }
+
                 // si los campos están bien agregados si se agrega el paciente
                 if (verificarCampo() == false) {
                     PacientesCRUD crud = new PacientesCRUD();
@@ -138,7 +170,6 @@ public class ventanaPacientes extends JFrame {
                 }
             }
         });
-
 
     }
 

@@ -27,7 +27,7 @@ public class PacientesCRUD {
     }
 
     // método que recibe el array list que fue resultado del metodo leerListaPacientes()
-    private static void escribirPacientes(ArrayList<Paciente>otraLista) {
+    public static void escribirPacientes(ArrayList<Paciente> otraLista) {
         Object o;
         try {
         FileOutputStream escribir =
